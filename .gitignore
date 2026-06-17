@@ -1,0 +1,26 @@
+# Swift Package Manager build
+.build/
+.swiftpm/
+DerivedData/
+Package.resolved
+
+# macOS
+.DS_Store
+*/.DS_Store
+
+# Built app bundle (สร้างตอน build ไม่ต้อง commit)
+WhisperApp.app/
+
+# Release artifacts
+*.dmg
+dist/
+build/
+
+# ป้องกัน key หลุดเข้า git (key จริงเก็บที่ ~/.whisperapp/ นอกโปรเจกต์อยู่แล้ว)
+*.key
+.env
+.env.*
+secrets/
+
+# Claude Code local
+.claude/
