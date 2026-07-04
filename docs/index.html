@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WhisperApp — พูดแล้วพิมพ์ให้ ทุกที่บน Mac</title>
-<meta name="description" content="WhisperApp — menu-bar dictation สำหรับ macOS กด Fn ค้างแล้วพูด ถอดเสียงด้วย Whisper + แก้คำด้วย AI พิมพ์ลงแอปไหนก็ได้">
+<title>Whisper — Speak, and your Mac types for you</title>
+<meta name="description" content="Whisper — a menu-bar dictation app for macOS. Hold Fn and speak: transcribed by Whisper, polished by AI, typed into any app.">
 <meta name="theme-color" content="#cd6f4d">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     /* Claude-inspired warm palette — cream/clay */
@@ -26,7 +26,7 @@
     --grain-opacity: 0.04;
     --max: 960px;
     --serif: "Fraunces", Georgia, "Times New Roman", serif;
-    --sans: "Hanken Grotesk", "Noto Sans Thai", -apple-system, BlinkMacSystemFont, sans-serif;
+    --sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
     --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
   }
   @media (prefers-color-scheme: dark) {
@@ -123,7 +123,7 @@
     margin: 26px 0 0;
     font-size: 1.25rem;
     line-height: 1.6;
-    max-width: 34ch;
+    max-width: 38ch;
     font-family: var(--serif);
     font-weight: 400;
     font-style: italic;
@@ -257,81 +257,81 @@
 <main>
 
   <header class="hero reveal d1">
-    <img class="logo" src="logo.png" alt="WhisperApp logo">
+    <img class="logo" src="logo.png" alt="Whisper logo">
     <div>
-      <h1>WhisperApp<span class="cursor"></span></h1>
+      <h1>Whisper<span class="cursor"></span></h1>
       <p class="roles">macos · menu-bar · dictation · whisper + llm</p>
     </div>
   </header>
 
-  <p class="tagline reveal d2">พูดแล้วให้ Mac พิมพ์ให้ — <strong>กด Fn ค้างแล้วพูด</strong> ปล่อยปุ๊บ ข้อความเด้งลงแอปที่ใช้อยู่ทันที</p>
+  <p class="tagline reveal d2">Speak, and your Mac types for you — <strong>hold Fn and talk</strong>. Release, and your words land in whatever app you're using.</p>
 
   <div class="btns reveal d3">
-    <a class="btn btn-primary" href="https://github.com/Gamezxz/WhisperApp/releases/download/v1.1/WhisperApp-1.1.dmg">⬇︎&nbsp; ดาวน์โหลดสำหรับ macOS</a>
-    <a class="btn btn-ghost" href="https://github.com/Gamezxz/WhisperApp">ดูโค้ดบน GitHub</a>
+    <a class="btn btn-primary" href="https://github.com/Gamezxz/WhisperApp/releases/download/v1.1/WhisperApp-1.1.dmg">⬇︎&nbsp; Download for macOS</a>
+    <a class="btn btn-ghost" href="https://github.com/Gamezxz/WhisperApp">View on GitHub</a>
   </div>
   <p class="meta reveal d3">v1.1 · macos 13+ · apple notarized · free &amp; open source · ~3mb</p>
 
   <section class="reveal d4">
-    <h2>ใช้ยังไง</h2>
+    <h2>How it works</h2>
     <div class="steps">
-      <div class="step"><span class="num">1</span><p>กดปุ่ม <span class="kbd">Fn</span> ค้างไว้ แล้วพูดสิ่งที่อยากพิมพ์</p></div>
-      <div class="step"><span class="num">2</span><p>ปล่อยปุ่ม — เสียงถูกถอดเป็นข้อความด้วย <strong>Whisper</strong> ภายในไม่กี่วินาที</p></div>
-      <div class="step"><span class="num">3</span><p>AI แก้คำผิด เว้นวรรคให้ แล้วพิมพ์ลงแอปที่คุณใช้อยู่ทันที</p></div>
+      <div class="step"><span class="num">1</span><p>Hold the <span class="kbd">Fn</span> key and say what you want to type</p></div>
+      <div class="step"><span class="num">2</span><p>Release — your speech is transcribed by <strong>Whisper</strong> in seconds</p></div>
+      <div class="step"><span class="num">3</span><p>AI fixes typos and spacing, then types it straight into the app you're using</p></div>
     </div>
   </section>
 
   <section class="reveal d5">
-    <h2>ทำไมต้อง whisperapp</h2>
+    <h2>Why Whisper</h2>
     <div class="grid">
       <div class="card">
         <div class="icon">🎙️</div>
         <h3>Hold to Talk</h3>
-        <p>กด Fn ค้างเพื่อพูด ปล่อยเพื่อหยุด — เหมือน walkie-talkie หรือสลับเป็นโหมด toggle (เคาะ 2 ครั้งเริ่ม เคาะครั้งเดียวหยุด) เปลี่ยนปุ่มลัดได้ตามใจ</p>
+        <p>Hold Fn to record, release to stop — like a walkie-talkie. Or switch to toggle mode (double-tap to start, single tap to stop). Rebind to any key you like.</p>
       </div>
       <div class="card">
         <div class="icon">⚡️</div>
-        <h3>เร็วด้วย Groq</h3>
-        <p>ถอดเสียงด้วย whisper-large-v3-turbo บน Groq — เร็วระดับเสี้ยววินาที มี free tier ใส่ API key เดียวใช้ได้ทั้งระบบ</p>
+        <h3>Fast with Groq</h3>
+        <p>Transcription runs on whisper-large-v3-turbo via Groq — blazing fast, with a generous free tier. One API key powers everything.</p>
       </div>
       <div class="card">
         <div class="icon">✨</div>
         <h3>AI Correction</h3>
-        <p>ข้อความที่ถอดได้ถูกขัดเกลาด้วย LLM อัตโนมัติ — แก้คำผิด เว้นวรรค จัดประโยคให้อ่านลื่น ทั้งไทยและอังกฤษ</p>
+        <p>Every transcript is polished by an LLM automatically — typos fixed, spacing cleaned, sentences smoothed. Works in English, Thai, and more.</p>
       </div>
       <div class="card">
         <div class="icon">📍</div>
-        <h3>อยู่บน Menu Bar</h3>
-        <p>ไม่มีหน้าต่างรก ไม่กินพื้นที่ Dock — แอปเงียบๆ อยู่บน menu bar พร้อมใช้ทุกเมื่อ ทำงานกับทุกแอปบน Mac</p>
+        <h3>Lives in the Menu Bar</h3>
+        <p>No cluttered windows, no Dock icon — a quiet menu-bar app that's always ready and works with every app on your Mac.</p>
       </div>
       <div class="card">
         <div class="icon">🔒</div>
-        <h3>ปลอดภัย &amp; Notarized</h3>
-        <p>Sign ด้วย Developer ID และผ่าน Apple notarization — ดับเบิลคลิกติดตั้งได้เลย ไม่มีคำเตือนความปลอดภัย API key เก็บในเครื่องเท่านั้น</p>
+        <h3>Secure &amp; Notarized</h3>
+        <p>Signed with a Developer ID and notarized by Apple — double-click to install, no security warnings. Your API key never leaves your machine.</p>
       </div>
       <div class="card">
         <div class="icon">🪶</div>
-        <h3>เบาหวิว</h3>
-        <p>เขียนด้วย Swift ล้วน ไฟล์ติดตั้งเพียง ~3MB ไม่มี Electron ไม่มี background process หนักเครื่อง</p>
+        <h3>Featherweight</h3>
+        <p>Pure Swift, ~3MB installer. No Electron, no heavy background processes weighing your Mac down.</p>
       </div>
     </div>
   </section>
 
   <section class="reveal d6">
-    <h2>เริ่มใช้ใน 2 นาที</h2>
+    <h2>Get started in 2 minutes</h2>
     <div class="install-box">
       <ol>
-        <li>ดาวน์โหลด <strong>WhisperApp.dmg</strong> แล้วลากไปที่ Applications</li>
-        <li>เปิดแอป → อนุญาตไมโครโฟน &amp; Accessibility ตามที่ระบบถาม</li>
-        <li>ขอ API key ฟรีที่ <a href="https://console.groq.com">console.groq.com</a> แล้ววางใน Settings (หรือตั้ง <code>GROQ_API_KEY</code> ใน <code>~/.zshrc</code>)</li>
-        <li>กด <strong>Fn</strong> ค้าง แล้วเริ่มพูดได้เลย</li>
+        <li>Download <strong>WhisperApp.dmg</strong> and drag it into Applications</li>
+        <li>Open the app → allow Microphone &amp; Accessibility when prompted</li>
+        <li>Grab a free API key at <a href="https://console.groq.com">console.groq.com</a> and paste it in Settings (or set <code>GROQ_API_KEY</code> in <code>~/.zshrc</code>)</li>
+        <li>Hold <strong>Fn</strong> and start talking</li>
       </ol>
     </div>
   </section>
 
 </main>
 <footer>
-  <span>whisperapp — by <a href="https://cointh.com">gamezxz</a></span>
+  <span>whisper — by <a href="https://cointh.com">gamezxz</a></span>
   <span><a href="https://github.com/Gamezxz/WhisperApp">github</a> · <a href="https://github.com/Gamezxz/WhisperApp/releases">releases</a></span>
 </footer>
 </body>

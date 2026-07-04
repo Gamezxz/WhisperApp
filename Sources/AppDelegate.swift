@@ -90,7 +90,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDele
         settings.target = self
         menu.addItem(settings)
 
-        let about = NSMenuItem(title: "About WhisperApp", action: #selector(openAbout), keyEquivalent: "")
+        let about = NSMenuItem(title: "About Whisper", action: #selector(openAbout), keyEquivalent: "")
         about.target = self
         menu.addItem(about)
 
@@ -128,7 +128,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDele
             let w = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 460, height: 760),
                 styleMask: [.titled, .closable], backing: .buffered, defer: false)
-            w.title = "WhisperApp Settings"
+            w.title = "Whisper Settings"
             w.contentView = NSHostingView(rootView: SettingsView())
             w.isReleasedWhenClosed = false
             w.delegate = self
@@ -147,7 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDele
             let w = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 340, height: 420),
                 styleMask: [.titled, .closable], backing: .buffered, defer: false)
-            w.title = "About WhisperApp"
+            w.title = "About Whisper"
             w.contentView = NSHostingView(rootView: AboutView())
             w.isReleasedWhenClosed = false
             w.delegate = self

@@ -13,21 +13,21 @@ struct AboutView: View {
                 Image(nsImage: icon)
                     .resizable()
                     .frame(width: 96, height: 96)
-                    .shadow(color: .purple.opacity(0.35), radius: 14, y: 6)
+                    .shadow(color: Color(red: 0.8, green: 0.44, blue: 0.3).opacity(0.35), radius: 14, y: 6)
             } else {
                 Image(systemName: "mic.circle.fill")
                     .resizable()
                     .frame(width: 96, height: 96)
-                    .foregroundColor(.purple)
+                    .foregroundColor(Color(red: 0.8, green: 0.44, blue: 0.3))
             }
 
-            Text("WhisperApp")
+            Text("Whisper")
                 .font(.title2).bold()
             Text("Version \(version)")
                 .font(.caption)
                 .foregroundColor(.secondary)
 
-            Text("พูดแล้วให้ Mac พิมพ์ให้ — กด Fn ค้างแล้วพูด\nถอดเสียงด้วย Whisper ขัดเกลาด้วย AI")
+            Text("Speak, and your Mac types for you.\nHold Fn to talk — transcribed by Whisper, polished by AI.")
                 .font(.callout)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
@@ -35,7 +35,7 @@ struct AboutView: View {
             Divider().padding(.horizontal, 30)
 
             VStack(spacing: 4) {
-                Text("สร้างโดย")
+                Text("Created by")
                     .font(.caption2)
                     .foregroundColor(.secondary)
                 Text("Gamezxz 🧙‍♂️")
