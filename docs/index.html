@@ -5,132 +5,284 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WhisperApp — พูดแล้วพิมพ์ให้ ทุกที่บน Mac</title>
 <meta name="description" content="WhisperApp — menu-bar dictation สำหรับ macOS กด Fn ค้างแล้วพูด ถอดเสียงด้วย Whisper + แก้คำด้วย AI พิมพ์ลงแอปไหนก็ได้">
+<meta name="theme-color" content="#cd6f4d">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0b1e;
-    --card: #17142e;
-    --text: #f0eefc;
-    --muted: #9c96c4;
-    --accent: #7c5cff;
-    --accent2: #4fd1ff;
-    --border: rgba(255,255,255,.08);
+    /* Claude-inspired warm palette — cream/clay */
+    --bg: #f4f2ea;
+    --bg-2: #efece1;
+    --fg: #1c1b17;
+    --muted: #6f6b60;
+    --line: #e0dccf;
+    --accent: #cd6f4d;
+    --accent-ink: #b85c3b;
+    --accent-soft: rgba(205, 111, 77, 0.12);
+    --hover-bg: #ebe7da;
+    --grain-opacity: 0.04;
+    --max: 960px;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Hanken Grotesk", "Noto Sans Thai", -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1c18;
+      --bg-2: #24221d;
+      --fg: #ece7da;
+      --muted: #9c9587;
+      --line: #36332b;
+      --accent: #e1875f;
+      --accent-ink: #ec9978;
+      --accent-soft: rgba(225, 135, 95, 0.14);
+      --hover-bg: #28251f;
+      --grain-opacity: 0.06;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
+    margin: 0;
     background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Noto Sans Thai", sans-serif;
-    line-height: 1.6;
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
     overflow-x: hidden;
   }
-  .glow {
-    position: fixed; top: -300px; left: 50%; transform: translateX(-50%);
-    width: 900px; height: 600px; border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(124,92,255,.35), transparent);
+  /* warm radial glow behind the header */
+  body::before {
+    content: "";
+    position: fixed;
+    top: -10%; left: 50%;
+    width: 120vw; height: 60vh;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, var(--accent-soft) 0%, transparent 60%);
     pointer-events: none; z-index: 0;
   }
-  main { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  /* paper grain overlay */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 1;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a { color: inherit; text-decoration: none; }
+  main {
+    position: relative; z-index: 2;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 10vh 24px 64px;
+  }
 
-  /* Hero */
-  .hero { text-align: center; padding: 88px 0 64px; }
-  .hero img.logo {
-    width: 148px; height: 148px;
-    filter: drop-shadow(0 20px 50px rgba(124,92,255,.45));
-    animation: float 5s ease-in-out infinite;
+  /* ---- Hero ---- */
+  .hero { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .hero .logo {
+    flex-shrink: 0;
+    width: 116px; height: 116px;
+    border-radius: 26px;
+    box-shadow: 0 10px 34px var(--accent-soft), 0 3px 12px rgba(0,0,0,.14);
+    transition: transform .3s ease;
   }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hero .logo:hover { transform: scale(1.03) rotate(-1.5deg); }
   .hero h1 {
-    font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; letter-spacing: -.02em;
-    margin: 28px 0 12px;
-    background: linear-gradient(90deg, #fff, var(--accent2), var(--accent));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    font-family: var(--serif);
+    font-optical-sizing: auto;
+    font-size: clamp(2.6rem, 8vw, 3.6rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    margin: 0;
+    display: inline-flex; align-items: baseline;
   }
-  .hero p.tagline { font-size: clamp(1.05rem, 2.5vw, 1.35rem); color: var(--muted); max-width: 620px; margin: 0 auto 36px; }
-  .hero p.tagline b { color: var(--text); }
-  .btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .cursor {
+    display: inline-block;
+    width: .5ch; height: .92em;
+    margin-left: 6px;
+    background: var(--accent);
+    border-radius: 1px;
+    transform: translateY(.04em);
+    animation: blink 1.15s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .roles {
+    font-family: var(--mono);
+    color: var(--muted);
+    margin: 14px 0 0;
+    font-size: .82rem;
+    letter-spacing: .01em;
+  }
+  .tagline {
+    margin: 26px 0 0;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    max-width: 34ch;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+  }
+  .tagline strong { font-style: normal; font-weight: 600; color: var(--accent-ink); }
+
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
   .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 30px; border-radius: 14px; font-size: 1.05rem; font-weight: 600;
-    text-decoration: none; transition: transform .15s, box-shadow .15s;
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600; font-size: .98rem;
+    border: 1.5px solid transparent;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
   }
   .btn:hover { transform: translateY(-2px); }
   .btn-primary {
-    background: linear-gradient(135deg, var(--accent), #5a3de0);
-    color: #fff; box-shadow: 0 8px 30px rgba(124,92,255,.4);
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 22px var(--accent-soft);
   }
-  .btn-ghost { border: 1px solid var(--border); color: var(--text); background: rgba(255,255,255,.04); }
-  .hero .meta { margin-top: 18px; font-size: .85rem; color: var(--muted); }
+  .btn-primary:hover { background: var(--accent-ink); }
+  .btn-ghost { border-color: var(--line); background: var(--bg-2); }
+  .btn-ghost:hover { background: var(--hover-bg); border-color: var(--accent); }
+  .meta { margin-top: 14px; font-family: var(--mono); font-size: .76rem; color: var(--muted); }
 
-  /* Demo strip */
-  .demo {
-    margin: 24px auto 0; max-width: 640px;
-    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
-    padding: 26px 30px; text-align: left; font-size: .98rem;
-  }
-  .demo .kbd {
-    display:inline-block; padding: 3px 10px; border-radius: 8px;
-    background: rgba(124,92,255,.18); border: 1px solid rgba(124,92,255,.4);
-    font-family: ui-monospace, "SF Mono", monospace; font-size: .9rem;
-  }
-  .demo .step { display: flex; gap: 14px; align-items: baseline; margin: 10px 0; }
-  .demo .num {
-    flex: none; width: 26px; height: 26px; border-radius: 50%;
-    background: var(--accent); color:#fff; font-weight: 700; font-size:.85rem;
-    display:flex; align-items:center; justify-content:center; align-self: center;
+  /* staggered reveal */
+  .reveal { opacity: 0; transform: translateY(14px); animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .d1 { animation-delay: .05s; } .d2 { animation-delay: .13s; }
+  .d3 { animation-delay: .21s; } .d4 { animation-delay: .32s; }
+  .d5 { animation-delay: .43s; } .d6 { animation-delay: .54s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; transform: none; }
+    .cursor { animation: none; }
   }
 
-  /* Features */
-  section.features { padding: 72px 0; }
-  h2.section { text-align:center; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 40px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  /* ---- Sections ---- */
+  section { margin-top: 64px; }
+  h2 {
+    font-family: var(--mono);
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  /* demo steps */
+  .steps { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--bg-2); overflow: hidden; }
+  .step {
+    display: flex; gap: 16px; align-items: baseline;
+    padding: 18px 22px;
+  }
+  .step + .step { border-top: 1px solid var(--line); }
+  .step .num {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 600;
+    color: var(--accent-ink);
+    flex: none; width: 1.4ch;
+  }
+  .step p { margin: 0; }
+  .kbd {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    border-bottom-width: 2.5px;
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: .85rem;
+  }
+
+  /* features */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
   .card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 18px;
-    padding: 26px; transition: border-color .2s, transform .2s;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg-2);
+    padding: 22px 24px;
+    transition: border-color .18s ease, background .18s ease, transform .2s ease;
   }
-  .card:hover { border-color: rgba(124,92,255,.5); transform: translateY(-3px); }
-  .card .icon { font-size: 1.8rem; margin-bottom: 12px; }
-  .card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-  .card p { color: var(--muted); font-size: .95rem; }
+  .card:hover { border-color: var(--accent); background: var(--hover-bg); transform: translateY(-2px); }
+  .card .icon { font-size: 1.5rem; }
+  .card h3 {
+    font-family: var(--serif);
+    font-size: 1.15rem; font-weight: 600;
+    margin: 10px 0 6px;
+  }
+  .card p { margin: 0; color: var(--muted); font-size: .93rem; }
 
-  /* Steps / install */
-  section.install { padding: 24px 0 72px; }
-  .install .card { max-width: 640px; margin: 0 auto; }
-  .install ol { margin-left: 22px; color: var(--muted); }
-  .install ol li { margin: 8px 0; }
-  .install ol li b { color: var(--text); }
-  code { font-family: ui-monospace, "SF Mono", monospace; background: rgba(255,255,255,.08); padding: 2px 7px; border-radius: 6px; font-size: .88em; }
+  /* install */
+  .install-box {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg-2);
+    padding: 26px 30px;
+  }
+  .install-box ol { margin: 0; padding-left: 22px; color: var(--muted); }
+  .install-box li { margin: 9px 0; }
+  .install-box li strong { color: var(--fg); }
+  .install-box a { color: var(--accent-ink); border-bottom: 1px solid var(--accent-soft); }
+  code {
+    font-family: var(--mono);
+    font-size: .85em;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 2px 7px;
+    border-radius: 6px;
+  }
 
   footer {
-    border-top: 1px solid var(--border);
-    padding: 34px 24px; text-align: center; color: var(--muted); font-size: .9rem;
+    position: relative; z-index: 2;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 30px 24px 48px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: .78rem;
+    color: var(--muted);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
   }
-  footer a { color: var(--accent2); text-decoration: none; }
+  footer a { color: var(--accent-ink); }
+  footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
-<div class="glow"></div>
 <main>
 
-  <section class="hero">
+  <header class="hero reveal d1">
     <img class="logo" src="logo.png" alt="WhisperApp logo">
-    <h1>WhisperApp</h1>
-    <p class="tagline">พูดแล้วให้ Mac พิมพ์ให้ — <b>กด Fn ค้างแล้วพูด</b> ปล่อยปุ๊บข้อความเด้งลงแอปที่ใช้อยู่ทันที ถอดเสียงด้วย Whisper แล้วขัดเกลาคำผิดด้วย AI ให้อัตโนมัติ</p>
-    <div class="btns">
-      <a class="btn btn-primary" href="https://github.com/Gamezxz/WhisperApp/releases/download/v1.1/WhisperApp-1.1.dmg">⬇︎ ดาวน์โหลดสำหรับ macOS</a>
-      <a class="btn btn-ghost" href="https://github.com/Gamezxz/WhisperApp">ดูโค้ดบน GitHub</a>
+    <div>
+      <h1>WhisperApp<span class="cursor"></span></h1>
+      <p class="roles">macos · menu-bar · dictation · whisper + llm</p>
     </div>
-    <p class="meta">macOS 13+ · Apple notarized — ติดตั้งได้ไม่มีคำเตือน · ฟรี &amp; open source</p>
+  </header>
 
-    <div class="demo">
-      <div class="step"><span class="num">1</span><span>กดปุ่ม <span class="kbd">Fn</span> ค้างไว้ แล้วพูดสิ่งที่อยากพิมพ์</span></div>
-      <div class="step"><span class="num">2</span><span>ปล่อยปุ่ม — เสียงถูกถอดเป็นข้อความด้วย <b>Whisper</b> ภายในไม่กี่วินาที</span></div>
-      <div class="step"><span class="num">3</span><span>AI แก้คำผิด/เว้นวรรคให้ แล้วพิมพ์ลงแอปที่คุณใช้อยู่ทันที ✨</span></div>
+  <p class="tagline reveal d2">พูดแล้วให้ Mac พิมพ์ให้ — <strong>กด Fn ค้างแล้วพูด</strong> ปล่อยปุ๊บ ข้อความเด้งลงแอปที่ใช้อยู่ทันที</p>
+
+  <div class="btns reveal d3">
+    <a class="btn btn-primary" href="https://github.com/Gamezxz/WhisperApp/releases/download/v1.1/WhisperApp-1.1.dmg">⬇︎&nbsp; ดาวน์โหลดสำหรับ macOS</a>
+    <a class="btn btn-ghost" href="https://github.com/Gamezxz/WhisperApp">ดูโค้ดบน GitHub</a>
+  </div>
+  <p class="meta reveal d3">v1.1 · macos 13+ · apple notarized · free &amp; open source · ~3mb</p>
+
+  <section class="reveal d4">
+    <h2>ใช้ยังไง</h2>
+    <div class="steps">
+      <div class="step"><span class="num">1</span><p>กดปุ่ม <span class="kbd">Fn</span> ค้างไว้ แล้วพูดสิ่งที่อยากพิมพ์</p></div>
+      <div class="step"><span class="num">2</span><p>ปล่อยปุ่ม — เสียงถูกถอดเป็นข้อความด้วย <strong>Whisper</strong> ภายในไม่กี่วินาที</p></div>
+      <div class="step"><span class="num">3</span><p>AI แก้คำผิด เว้นวรรคให้ แล้วพิมพ์ลงแอปที่คุณใช้อยู่ทันที</p></div>
     </div>
   </section>
 
-  <section class="features">
-    <h2 class="section">ทำไมต้อง WhisperApp</h2>
+  <section class="reveal d5">
+    <h2>ทำไมต้อง whisperapp</h2>
     <div class="grid">
       <div class="card">
         <div class="icon">🎙️</div>
@@ -140,7 +292,7 @@
       <div class="card">
         <div class="icon">⚡️</div>
         <h3>เร็วด้วย Groq</h3>
-        <p>ถอดเสียงด้วย whisper-large-v3-turbo บน Groq — เร็วระดับเสี้ยววินาที และมี free tier ใส่ API key เดียวใช้ได้ทั้งระบบ</p>
+        <p>ถอดเสียงด้วย whisper-large-v3-turbo บน Groq — เร็วระดับเสี้ยววินาที มี free tier ใส่ API key เดียวใช้ได้ทั้งระบบ</p>
       </div>
       <div class="card">
         <div class="icon">✨</div>
@@ -160,26 +312,27 @@
       <div class="card">
         <div class="icon">🪶</div>
         <h3>เบาหวิว</h3>
-        <p>เขียนด้วย Swift ล้วน ไฟล์ติดตั้งเพียง ~4MB ไม่มี Electron ไม่มี background process หนักเครื่อง</p>
+        <p>เขียนด้วย Swift ล้วน ไฟล์ติดตั้งเพียง ~3MB ไม่มี Electron ไม่มี background process หนักเครื่อง</p>
       </div>
     </div>
   </section>
 
-  <section class="install">
-    <h2 class="section">เริ่มใช้ใน 2 นาที</h2>
-    <div class="card">
+  <section class="reveal d6">
+    <h2>เริ่มใช้ใน 2 นาที</h2>
+    <div class="install-box">
       <ol>
-        <li>ดาวน์โหลด <b>WhisperApp.dmg</b> แล้วลากไปที่ Applications</li>
+        <li>ดาวน์โหลด <strong>WhisperApp.dmg</strong> แล้วลากไปที่ Applications</li>
         <li>เปิดแอป → อนุญาตไมโครโฟน &amp; Accessibility ตามที่ระบบถาม</li>
-        <li>ขอ API key ฟรีที่ <a href="https://console.groq.com" style="color:var(--accent2)">console.groq.com</a> แล้ววางใน Settings (หรือตั้ง <code>GROQ_API_KEY</code> ใน <code>~/.zshrc</code>)</li>
-        <li>กด <b>Fn</b> ค้าง แล้วเริ่มพูดได้เลย 🎉</li>
+        <li>ขอ API key ฟรีที่ <a href="https://console.groq.com">console.groq.com</a> แล้ววางใน Settings (หรือตั้ง <code>GROQ_API_KEY</code> ใน <code>~/.zshrc</code>)</li>
+        <li>กด <strong>Fn</strong> ค้าง แล้วเริ่มพูดได้เลย</li>
       </ol>
     </div>
   </section>
 
 </main>
 <footer>
-  WhisperApp — สร้างโดย <a href="https://github.com/Gamezxz">Gamezxz</a> · Open source บน <a href="https://github.com/Gamezxz/WhisperApp">GitHub</a>
+  <span>whisperapp — by <a href="https://cointh.com">gamezxz</a></span>
+  <span><a href="https://github.com/Gamezxz/WhisperApp">github</a> · <a href="https://github.com/Gamezxz/WhisperApp/releases">releases</a></span>
 </footer>
 </body>
 </html>
