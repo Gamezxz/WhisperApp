@@ -16,6 +16,26 @@ echo "🔨 สร้าง release build + bundle ใหม่..."
 # หา Developer ID
 DEV_ID=$(security find-identity -v -p codesigning "$KEYCHAIN" 2>/dev/null | grep "Developer ID Application" | head -1 | sed -n 's/.*"\(.*\)".*/\1/p')
 
+# Notarize + staple the .app itself (ไม่ใช่แค่ DMG)
+# จำเป็นเพราะ: Sparkle แจก .zip ของ .app, และถ้า user แตก .app ออกจาก DMG,
+# Gatekeeper บนเครื่องอื่นเช็ค .app โดยตรง — ถ้าไม่มี notarization ticket → บล็อก
+NOTARY_PROFILE="whisperapp-notary"
+if xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" >/dev/null 2>&1; then
+    echo "📤 Notarizing $APP_BUNDLE (อาจใช้เวลา 1-5 นาที)..."
+    NOTARY_ZIP="/tmp/${APP_NAME}-notary.zip"
+    ditto -c -k --keepParent "$APP_BUNDLE" "$NOTARY_ZIP"
+    if xcrun notarytool submit "$NOTARY_ZIP" --keychain-profile "$NOTARY_PROFILE" --wait; then
+        xcrun stapler staple "$APP_BUNDLE"
+        echo "✅ $APP_BUNDLE notarized + stapled"
+    else
+        echo "⚠️  Notarize .app ไม่ผ่าน — ดู log: xcrun notarytool log <submission-id> --keychain-profile $NOTARY_PROFILE"
+    fi
+    rm -f "$NOTARY_ZIP"
+else
+    echo "⚠️  ข้าม notarize .app — ไม่มี credentials profile '$NOTARY_PROFILE'"
+    echo "   สร้างครั้งเดียว: xcrun notarytool store-credentials \"$NOTARY_PROFILE\" --apple-id <apple-id> --team-id DYJAX3728R"
+fi
+
 echo "📦 เตรียม staging สำหรับ DMG..."
 STAGE=$(mktemp -d)
 cp -R "$APP_BUNDLE" "$STAGE/"

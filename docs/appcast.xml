@@ -6,6 +6,14 @@
     <description>Most recent changes to Whisper</description>
     <language>en</language>
     <item>
+        <title>Version 1.2.4</title>
+        <pubDate>Tue, 07 Jul 2026 03:19:49 +0700</pubDate>
+        <sparkle:version>1.2.4</sparkle:version>
+        <sparkle:shortVersionString>1.2.4</sparkle:shortVersionString>
+        <description><![CDATA[Fix: app bundle is now notarized + stapled (Gatekeeper no longer blocks on other Macs)]]></description>
+        <enclosure url="https://github.com/Gamezxz/WhisperApp/releases/download/v1.2.4/Whisper-1.2.4.zip" type="application/octet-stream" sparkle:edSignature="Nian3tjFNVAgZWOl+rE+j7JhPUAMOevP0xcwlSMTFOD4/IAZBq9fijJW57aUWR1OXMUApj6QG1wtzW5NII+qDg==" sparkle:length="4604482" />
+    </item>
+    <item>
         <title>Version 1.2.3</title>
         <pubDate>Tue, 07 Jul 2026 03:07:52 +0700</pubDate>
         <sparkle:version>1.2.3</sparkle:version>
