@@ -10,6 +10,7 @@ Package.resolved
 
 # Built app bundle (สร้างตอน build ไม่ต้อง commit)
 WhisperApp.app/
+Whisper.app/
 
 # Release artifacts
 *.dmg

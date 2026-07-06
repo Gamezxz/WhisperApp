@@ -10,7 +10,7 @@
 set -e
 cd "$(dirname "$0")"
 
-APP_NAME="WhisperApp"
+APP_NAME="Whisper"
 APP_BUNDLE="$APP_NAME.app"
 VERSION="${1:?usage: ./make_release.sh X.Y [\"release notes\"]}"
 NOTES="${2:-Bug fixes and improvements.}"
@@ -29,7 +29,7 @@ fi
 echo "🔨 Building + notarizing DMG…"
 ./make_dmg.sh >/dev/null
 
-# 3. zip the .app for Sparkle (WhisperApp.app/ at archive root)
+# 3. zip the .app for Sparkle (Whisper.app/ at archive root)
 echo "📦 Zipping .app for Sparkle…"
 rm -f "$APP_NAME-$VERSION.zip"
 ditto -c -k --keepParent "$APP_BUNDLE" "$APP_NAME-$VERSION.zip"
@@ -56,7 +56,7 @@ item = f'''    <item>
         <sparkle:version>{v}</sparkle:version>
         <sparkle:shortVersionString>{v}</sparkle:shortVersionString>
         <description><![CDATA[{notes}]]></description>
-        <enclosure url="https://github.com/Gamezxz/WhisperApp/releases/download/v{v}/WhisperApp-{v}.zip" type="application/octet-stream" sparkle:edSignature="{sig}" sparkle:length="{length}" />
+        <enclosure url="https://github.com/Gamezxz/WhisperApp/releases/download/v{v}/Whisper-{v}.zip" type="application/octet-stream" sparkle:edSignature="{sig}" sparkle:length="{length}" />
     </item>'''
 path = "docs/appcast.xml"
 with open(path, encoding="utf-8") as f:

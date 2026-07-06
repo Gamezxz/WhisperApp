@@ -4,7 +4,7 @@
 set -e
 cd "$(dirname "$0")"
 
-APP_NAME="WhisperApp"
+APP_NAME="Whisper"
 APP_BUNDLE="$APP_NAME.app"
 KEYCHAIN="${HOME}/Library/Keychains/login.keychain-db"
 VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Info.plist 2>/dev/null || echo "1.0")

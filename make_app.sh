@@ -3,8 +3,8 @@
 set -e
 cd "$(dirname "$0")"
 
-APP_NAME="WhisperApp"
-APP_BUNDLE="$APP_NAME.app"
+APP_NAME="WhisperApp"          # SPM executable name (must match Package.swift target)
+APP_BUNDLE="Whisper.app"       # name shown in /Applications
 KEYCHAIN="${HOME}/Library/Keychains/login.keychain-db"
 
 echo "🔨 Building release..."
